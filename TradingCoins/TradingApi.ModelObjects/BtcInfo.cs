@@ -9,7 +9,6 @@ namespace TradingApi.ModelObjects
          SymbolMapHelper = new Dictionary<ExchangeSymbolEnum, ExchangeSymbolNameEnum>();
          SymbolMapHelper.Add(ExchangeSymbolEnum.btc,ExchangeSymbolNameEnum.bitcoin);
          SymbolMapHelper.Add(ExchangeSymbolEnum.ltc, ExchangeSymbolNameEnum.litecoin);
-         SymbolMapHelper.Add(ExchangeSymbolEnum.drk, ExchangeSymbolNameEnum.darkcoin);
       }
 
       public static Dictionary<ExchangeSymbolEnum, ExchangeSymbolNameEnum> SymbolMapHelper;
@@ -25,15 +24,13 @@ namespace TradingApi.ModelObjects
       {
          ltc = 0,
          btc = 1,
-         usd = 2,
-         drk = 3
+         usd = 2
       }
 
       public enum ExchangeSymbolNameEnum
       {
          bitcoin = 0,
-         litecoin = 1,
-         darkcoin = 2
+         litecoin = 1
       }
 
       public enum ExchangeEnum
