@@ -63,7 +63,7 @@ namespace TradingApi.Bitfinex
        public delegate void CancelAllActiveOrdersMsgHandler(string msg);
 
        public event ActiveOrdersMsgHandler ActiveOrdersMsg;
-       public delegate void ActiveOrdersMsgHandler(IList<BitfinexMarginPositionResponse> activePositionResponse);
+       public delegate void ActiveOrdersMsgHandler(IList<BitfinexOrderStatusResponse> activePositionResponse);
 
        public event HistoryMsgHandler HistoryMsg;
        public delegate void HistoryMsgHandler(IList<BitfinexHistoryResponse> historyResponse);
