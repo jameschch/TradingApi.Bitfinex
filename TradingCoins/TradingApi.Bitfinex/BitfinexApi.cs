@@ -66,8 +66,7 @@ namespace TradingApi.Bitfinex
         {
             _apiSecret = apiSecret;
             _apiKey = apiKey;
-         	Log.Trace(string.Format("Connecting to Bitfinex Api with key: {0}",apiKey));
-
+         	Log.Trace(string.Format("Connecting to Bitfinex Api with key: {0}", apiKey));
         }
 
         #region Unauthenticated Calls
@@ -353,7 +352,6 @@ namespace TradingApi.Bitfinex
             if (response.Content != "[]" && response.Content.StartsWith("["))
             {
                 var activeOrdersResponseObj = JsonConvert.DeserializeObject<BitfinexOrderStatusResponse[]>(response.Content);
-                //ActiveOrdersMsg(activeOrdersResponseObj);
 
                 Log.Trace(string.Format("Active Orders:"));
                 foreach (var activeOrder in activeOrdersResponseObj)
