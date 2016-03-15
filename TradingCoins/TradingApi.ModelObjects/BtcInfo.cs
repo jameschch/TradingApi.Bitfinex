@@ -17,14 +17,17 @@ namespace TradingApi.ModelObjects
       {
          ltcbtc = 0,
          btcusd = 1,
-         ltcusd = 2
+         ltcusd = 2,
+         ethusd = 3,
+         ethbtc = 4
       }
 
       public enum ExchangeSymbolEnum
       {
          ltc = 0,
          btc = 1,
-         usd = 2
+         usd = 2,
+         eth = 3
       }
 
       public enum ExchangeSymbolNameEnum

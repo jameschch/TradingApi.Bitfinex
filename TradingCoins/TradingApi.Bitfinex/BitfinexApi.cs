@@ -13,7 +13,7 @@ using QuantConnect.Logging;
 
 namespace TradingApi.Bitfinex
 {
-    public sealed partial class BitfinexApi
+    public partial class BitfinexApi
     {
         private readonly string _apiSecret;
         private readonly string _apiKey;
@@ -99,7 +99,7 @@ namespace TradingApi.Bitfinex
             return symbolsResponseObj;
         }
 
-        public BitfinexPublicTickerGet GetPublicTicker(BtcInfo.PairTypeEnum pairType, BtcInfo.BitfinexUnauthenicatedCallsEnum callType)
+        public virtual BitfinexPublicTickerGet GetPublicTicker(BtcInfo.PairTypeEnum pairType, BtcInfo.BitfinexUnauthenicatedCallsEnum callType)
         {
             var call = Enum.GetName(typeof(BtcInfo.BitfinexUnauthenicatedCallsEnum), callType);
             var symbol = Enum.GetName(typeof(BtcInfo.PairTypeEnum), pairType);
@@ -197,7 +197,7 @@ namespace TradingApi.Bitfinex
             }
         }
 
-        public BitfinexNewOrderResponse SendOrder(BitfinexNewOrderPost newOrder)
+        public virtual BitfinexNewOrderResponse SendOrder(BitfinexNewOrderPost newOrder)
         {
             IRestResponse response = null;
             try
@@ -257,7 +257,7 @@ namespace TradingApi.Bitfinex
 
         #region Cancel Crypto Orders
 
-        public BitfinexOrderStatusResponse CancelOrder(int orderId)
+        public virtual BitfinexOrderStatusResponse CancelOrder(int orderId)
         {
             var cancelPost = new BitfinexOrderStatusPost();
             cancelPost.Request = OrderCancelRequestUrl;
@@ -274,7 +274,7 @@ namespace TradingApi.Bitfinex
             return orderCancelResponseObj;
         }
 
-        public BitfinexCancelReplaceOrderResponse CancelReplaceOrder(int cancelOrderId, BitfinexNewOrderPost newOrder)
+        public virtual BitfinexCancelReplaceOrderResponse CancelReplaceOrder(int cancelOrderId, BitfinexNewOrderPost newOrder)
         {
             var replaceOrder = new BitfinexCancelReplacePost()
             {
@@ -289,7 +289,7 @@ namespace TradingApi.Bitfinex
             return CancelReplaceOrder(replaceOrder);
         }
 
-        public BitfinexCancelReplaceOrderResponse CancelReplaceOrder(BitfinexCancelReplacePost replaceOrder)
+        public virtual BitfinexCancelReplaceOrderResponse CancelReplaceOrder(BitfinexCancelReplacePost replaceOrder)
         {
             replaceOrder.Request = OrderCancelRequestUrl + CancelReplaceRequestUrl;
             replaceOrder.Nonce = Common.UnixTimeStampUtc().ToString();
@@ -342,7 +342,7 @@ namespace TradingApi.Bitfinex
         #endregion
 
         #region Trading Info
-        public BitfinexOrderStatusResponse[] GetActiveOrders()
+        public virtual BitfinexOrderStatusResponse[] GetActiveOrders()
         {
             var activeOrdersPost = new BitfinexPostBase();
             activeOrdersPost.Request = ActiveOrdersRequestUrl;
@@ -427,7 +427,7 @@ namespace TradingApi.Bitfinex
 
         #region Account Information
 
-        public IList<BitfinexBalanceResponse> GetBalances()
+        public virtual IList<BitfinexBalanceResponse> GetBalances()
         {
             try
             {
@@ -518,7 +518,7 @@ namespace TradingApi.Bitfinex
             return marginInfoResponseObj;
         }
 
-        public IList<BitfinexMarginPositionResponse> GetActivePositions()
+        public virtual IList<BitfinexMarginPositionResponse> GetActivePositions()
         {
             var activePositionsPost = new BitfinexPostBase();
             activePositionsPost.Request = ActivePositionsRequestUrl;
