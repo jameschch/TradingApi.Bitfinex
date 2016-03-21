@@ -15,6 +15,8 @@ namespace TradingApi.Bitfinex
 {
     public partial class BitfinexApi
     {
+
+        #region Declarations
         private readonly string _apiSecret;
         private readonly string _apiKey;
 
@@ -61,12 +63,13 @@ namespace TradingApi.Bitfinex
         private const string Sell = "sell";
 
         public string BaseBitfinexUrl = @"https://api.bitfinex.com";
+        #endregion
 
         public BitfinexApi(string apiSecret, string apiKey)
         {
             _apiSecret = apiSecret;
             _apiKey = apiKey;
-         	Log.Trace(string.Format("Connecting to Bitfinex Api with key: {0}", apiKey));
+            Log.Trace(string.Format("BitfinexAp.BitfinexApi(): Connecting to Bitfinex Api"));
         }
 
         #region Unauthenticated Calls
@@ -93,7 +96,7 @@ namespace TradingApi.Bitfinex
             var symbolsResponseObj = JsonConvert.DeserializeObject<IList<BitfinexSymbolDetailsResponse>>(response.Content);
 
             foreach (var bitfinexSymbolDetailsResponse in symbolsResponseObj)
-                Log.Trace(string.Format("Symbol: {0}", bitfinexSymbolDetailsResponse));
+                Log.Trace(string.Format("BitfinexApi.GetSymbols(): {0}", bitfinexSymbolDetailsResponse));
 
             return symbolsResponseObj;
         }
@@ -106,7 +109,7 @@ namespace TradingApi.Bitfinex
             var response = GetBaseResponse(url);
 
             var publicticketResponseObj = JsonConvert.DeserializeObject<BitfinexPublicTickerGet>(response.Content);
-            Log.Trace(string.Format("Ticker: {0}", publicticketResponseObj));
+            Log.Trace(string.Format("BitfinexApi.GetSymbols(): {0}", publicticketResponseObj));
 
             return publicticketResponseObj;
         }
@@ -121,7 +124,7 @@ namespace TradingApi.Bitfinex
             var symbolStatsResponseObj = JsonConvert.DeserializeObject<IList<BitfinexSymbolStatsResponse>>(response.Content);
 
             foreach (var symbolStatsResponse in symbolStatsResponseObj)
-                Log.Trace(string.Format("Pair Stats: {0}", symbolStatsResponse));
+                Log.Trace(string.Format("BitfinexApi.GetPairStats(): {0}", symbolStatsResponse));
 
             return symbolStatsResponseObj;
         }
@@ -136,7 +139,7 @@ namespace TradingApi.Bitfinex
             var pairTradesResponseObj = JsonConvert.DeserializeObject<IList<BitfinexTradesGet>>(response.Content);
 
             foreach (var pairTrade in pairTradesResponseObj)
-                Log.Trace(string.Format("Pair Trade: {0}", pairTrade));
+                Log.Trace(string.Format("BitfinexApi.GetPairTrades(): {0}", pairTrade));
 
             return pairTradesResponseObj;
         }
@@ -182,9 +185,8 @@ namespace TradingApi.Bitfinex
 
                 var multipleOrderResponseObj = JsonConvert.DeserializeObject<BitfinexMultipleNewOrderResponse>(response.Content);
 
-                Log.Trace("Sending Multiple Orders:");
                 foreach (var order in orders)
-                    Log.Trace(order.ToString());
+                    Log.Trace("BitfinexApi.SendMultipleOrders(): Sending Multiple Orders: " + order.ToString());
 
                 return multipleOrderResponseObj;
 
@@ -209,8 +211,8 @@ namespace TradingApi.Bitfinex
 
                 var newOrderResponseObj = JsonConvert.DeserializeObject<BitfinexNewOrderResponse>(response.Content);
 
-                Log.Trace(string.Format("Sending New Order: {0}", newOrder.ToString()));
-                Log.Trace(string.Format("Response from Exchange: {0}", newOrderResponseObj));
+                Log.Trace(string.Format("BitfinexApi.SendOrder(): {0}", newOrder.ToString()));
+                Log.Trace(string.Format("BitfinexApi.SendOrder(): Response: {0}", newOrderResponseObj));
 
                 return newOrderResponseObj;
             }
@@ -268,7 +270,7 @@ namespace TradingApi.Bitfinex
             var response = GetRestResponse(client, cancelPost);
             var orderCancelResponseObj = JsonConvert.DeserializeObject<BitfinexOrderStatusResponse>(response.Content);
 
-            Log.Trace(string.Format("Cancel OrderId: {0}, Response From Exchange: {1}", orderId, orderCancelResponseObj.ToString()));
+            Log.Trace(string.Format("BitfinexApi.CancelOrder():  OrderId: {0}, Response From Exchange: {1}", orderId, orderCancelResponseObj.ToString()));
 
             return orderCancelResponseObj;
         }
@@ -299,8 +301,8 @@ namespace TradingApi.Bitfinex
             var replaceOrderResponseObj = JsonConvert.DeserializeObject<BitfinexCancelReplaceOrderResponse>(response.Content);
             replaceOrderResponseObj.OriginalOrderId = replaceOrder.CancelOrderId;
 
-            Log.Trace(string.Format("Cancel Replace: {0}"));
-            Log.Trace(string.Format("Response From Exchange: {0}", replaceOrderResponseObj.ToString()));
+            Log.Trace(string.Format("BitfinexApi.CancelReplaceOrder(): {0}"));
+            Log.Trace(string.Format("BitfinexApi.CancelReplaceOrder(): Response From Exchange: {0}", replaceOrderResponseObj.ToString()));
 
             return replaceOrderResponseObj;
         }
@@ -320,8 +322,8 @@ namespace TradingApi.Bitfinex
             foreach (var cancelOrderId in intArr)
                 str.Append(cancelOrderId + ", ");
 
-            Log.Trace(string.Format("Cancelling the following orders: {0}", str.ToString()));
-            Log.Trace(string.Format("Response From Exchange: {0}", response.Content));
+            Log.Trace(string.Format("BitfinexApi.CancelMultipleOrders(): {0}", str.ToString()));
+            Log.Trace(string.Format("BitfinexApi.CancelMultipleOrders(): Response From Exchange: {0}", response.Content));
 
             return response.Content;
         }
@@ -353,9 +355,8 @@ namespace TradingApi.Bitfinex
             {
                 var activeOrdersResponseObj = JsonConvert.DeserializeObject<BitfinexOrderStatusResponse[]>(response.Content);
 
-                Log.Trace(string.Format("Active Orders:"));
                 foreach (var activeOrder in activeOrdersResponseObj)
-                    Log.Trace(string.Format("Order: {0}", activeOrder.ToString()));
+                    Log.Trace(string.Format("BitfinexApi.GetActiveOrders(): Order: {0}", activeOrder.ToString()));
 
                 return activeOrdersResponseObj;
             }
@@ -377,9 +378,8 @@ namespace TradingApi.Bitfinex
             var response = GetRestResponse(client, historyPost);
             var historyResponseObj = JsonConvert.DeserializeObject<IList<BitfinexHistoryResponse>>(response.Content);
 
-            Log.Trace(string.Format("History:"));
             foreach (var history in historyResponseObj)
-                Log.Trace(string.Format("{0}", history));
+                Log.Trace(string.Format("BitfinexApi.GetHistory(): {0}", history));
 
             return historyResponseObj;
         }
@@ -398,9 +398,8 @@ namespace TradingApi.Bitfinex
 
             var myTradesResponseObj = JsonConvert.DeserializeObject<IList<BitfinexMyTradesResponse>>(response.Content);
 
-            Log.Trace(string.Format("My Trades:"));
             foreach (var myTrade in myTradesResponseObj)
-                Log.Trace(string.Format("Trade: {0}", myTrade));
+                Log.Trace(string.Format("BitfinexApi.GetMyTrades():: {0}", myTrade));
 
             return myTradesResponseObj;
         }
@@ -416,7 +415,7 @@ namespace TradingApi.Bitfinex
             var response = GetRestResponse(client, orderStatusPost);
             var orderStatusResponseObj = JsonConvert.DeserializeObject<BitfinexOrderStatusResponse>(response.Content);
 
-            Log.Trace(string.Format("OrderId: {0} Status: {1}", orderId, orderStatusResponseObj.ToString()));
+            Log.Trace(string.Format("BitfinexApi.GetOrderStatus(): OrderId: {0} Status: {1}", orderId, orderStatusResponseObj.ToString()));
 
             return orderStatusResponseObj;
         }
@@ -438,9 +437,8 @@ namespace TradingApi.Bitfinex
 
                 var balancesObj = JsonConvert.DeserializeObject<IList<BitfinexBalanceResponse>>(response.Content);
 
-                Log.Trace("Balances:");
                 foreach (var balance in balancesObj)
-                    Log.Trace(balance.ToString());
+                    Log.Trace("BitfinexApi.GetBalances(): " + balance.ToString());
 
                 return balancesObj;
             }
@@ -474,8 +472,8 @@ namespace TradingApi.Bitfinex
             var response = GetRestResponse(client, depositPost);
 
             var depositResponseObj = JsonConvert.DeserializeObject<BitfinexDepositResponse>(response.Content);
-            Log.Trace(string.Format("Attempting to deposit: {0} with method: {1} to wallet: {2}", currency, method, wallet));
-            Log.Trace(string.Format("Response from exchange: {0}", depositResponseObj));
+            Log.Trace(string.Format("BitfinexApi.Deposit(): Attempting to deposit: {0} with method: {1} to wallet: {2}", currency, method, wallet));
+            Log.Trace(string.Format("BitfinexApi.Deposit(): Response from exchange: {0}", depositResponseObj));
             return depositResponseObj;
         }
 
@@ -491,7 +489,7 @@ namespace TradingApi.Bitfinex
 
             var client = GetRestClient(accountPost.Request);
             var response = GetRestResponse(client, accountPost);
-            Log.Trace(string.Format("Account Information: {0}", response.Content));
+            Log.Trace(string.Format("BitfinexApi.GetAccountInformation(): {0}", response.Content));
             return response.Content;
         }
 
@@ -511,7 +509,7 @@ namespace TradingApi.Bitfinex
             var marginInfoStr = jArr[0].ToString();
             var marginInfoResponseObj = JsonConvert.DeserializeObject<BitfinexMarginInfoResponse>(marginInfoStr);
 
-            Log.Trace(string.Format("Margin Info: {0}", marginInfoResponseObj.ToString()));
+            Log.Trace(string.Format("BitfinexApi.GetMarginInformation(): {0}", marginInfoResponseObj.ToString()));
 
             return marginInfoResponseObj;
         }
@@ -527,9 +525,8 @@ namespace TradingApi.Bitfinex
 
             var activePositionsResponseObj = JsonConvert.DeserializeObject<IList<BitfinexMarginPositionResponse>>(response.Content);
 
-            Log.Trace(string.Format("Active Positions: "));
             foreach (var activePos in activePositionsResponseObj)
-                Log.Trace(string.Format("Position: {0}", activePos));
+                Log.Trace(string.Format("BitfinexApi.GetActivePositions(): {0}", activePos));
 
             return activePositionsResponseObj;
         }
@@ -555,8 +552,7 @@ namespace TradingApi.Bitfinex
 
             var newOfferResponseObj = JsonConvert.DeserializeObject<BitfinexOfferStatusResponse>(response.Content);
 
-            Log.Trace(string.Format("Sending New Offer: {0}", newOffer.ToString()));
-            Log.Trace(string.Format("Response From Exchange: {0}", newOfferResponseObj));
+            Log.Trace(string.Format("BitfinexApi.CancelMultipleOrders(): Response From Exchange: {0}", newOfferResponseObj));
             return newOfferResponseObj;
         }
 
@@ -601,7 +597,7 @@ namespace TradingApi.Bitfinex
             var response = GetRestResponse(client, cancelPost);
             var orderCancelResponseObj = JsonConvert.DeserializeObject<BitfinexOfferStatusResponse>(response.Content);
 
-            Log.Trace(string.Format("Cancelling offerId: {0}. Exchange response: {1}", offerId, orderCancelResponseObj.ToString()));
+            Log.Trace(string.Format("BitfinexApi.CancelOffer(): {0}. Exchange response: {1}", offerId, orderCancelResponseObj.ToString()));
 
             return orderCancelResponseObj;
         }
@@ -618,7 +614,7 @@ namespace TradingApi.Bitfinex
             var response = GetRestResponse(client, statusPost);
             var offerStatuslResponseObj = JsonConvert.DeserializeObject<BitfinexOfferStatusResponse>(response.Content);
 
-            Log.Trace(string.Format("Status of offerId: {0}. Exchange response: {1}", offerId, offerStatuslResponseObj.ToString()));
+            Log.Trace(string.Format("BitfinexApi.GetOfferStatus(): {0}. Exchange response: {1}", offerId, offerStatuslResponseObj.ToString()));
 
             return offerStatuslResponseObj;
         }
@@ -633,9 +629,8 @@ namespace TradingApi.Bitfinex
             var response = GetRestResponse(client, activeOffersPost);
             var activeOffersResponseObj = JsonConvert.DeserializeObject<IList<BitfinexOfferStatusResponse>>(response.Content);
 
-            Log.Trace(string.Format("Active Offers:"));
             foreach (var activeOffer in activeOffersResponseObj)
-                Log.Trace(string.Format("Offer: {0}", activeOffer.ToString()));
+                Log.Trace(string.Format("BitfinexApi.GetActiveOffers(): {0}", activeOffer.ToString()));
 
             return activeOffersResponseObj;
         }
@@ -650,9 +645,8 @@ namespace TradingApi.Bitfinex
             var response = GetRestResponse(client, activeCreditsPost);
             var activeCreditsResponseObj = JsonConvert.DeserializeObject<IList<BitfinexActiveCreditsResponse>>(response.Content);
 
-            Log.Trace(string.Format("Active Credits:"));
             foreach (var activeCredits in activeCreditsResponseObj)
-                Log.Trace(string.Format("Credits: {0}", activeCredits.ToString()));
+                Log.Trace(string.Format("BitfinexApi.GetActiveCredits(): Credits: {0}", activeCredits.ToString()));
 
             return activeCreditsResponseObj;
         }
@@ -674,9 +668,8 @@ namespace TradingApi.Bitfinex
             var response = GetRestResponse(client, activeSwapsInMarginPost);
             var activeSwapsInMarginResponseObj = JsonConvert.DeserializeObject<IList<BitfinexActiveSwapsInMarginResponse>>(response.Content);
 
-            Log.Trace(string.Format("Active Swaps In Margin Pos:"));
             foreach (var activeSwaps in activeSwapsInMarginResponseObj)
-                Log.Trace(string.Format("Swaps used in margin: {0}", activeSwaps.ToString()));
+                Log.Trace(string.Format("BitfinexApi.GetActiveSwapsUsedInMarginPosition(): Swaps used in margin: {0}", activeSwaps.ToString()));
 
             return activeSwapsInMarginResponseObj;
         }
@@ -693,7 +686,7 @@ namespace TradingApi.Bitfinex
 
             var closeSwapResponseObj = JsonConvert.DeserializeObject<BitfinexActiveSwapsInMarginResponse>(response.Content);
 
-            Log.Trace(string.Format("Close Swap Id: {0}, Response from Exchange: {1}", swapId, closeSwapResponseObj.ToString()));
+            Log.Trace(string.Format("BitfinexApi.CloseSwap(): Close Swap Id: {0}, Response from Exchange: {1}", swapId, closeSwapResponseObj.ToString()));
 
             return closeSwapResponseObj;
         }
@@ -718,7 +711,7 @@ namespace TradingApi.Bitfinex
 
             var claimPosResponseObj = JsonConvert.DeserializeObject<BitfinexMarginPositionResponse>(response.Content);
 
-            Log.Trace(string.Format("Claim Position Id: {0}, Response from Exchange: {1}", positionId, claimPosResponseObj.ToString()));
+            Log.Trace(string.Format("BitfinexApi.ClaimPosition(): Claim Position Id: {0}, Response from Exchange: {1}", positionId, claimPosResponseObj.ToString()));
 
             return claimPosResponseObj;
         }
@@ -754,10 +747,10 @@ namespace TradingApi.Bitfinex
                     break;
                 case HttpStatusCode.BadRequest:
                     var errorMsgObj = JsonConvert.DeserializeObject<ErrorResponse>(response.Content);
-                    Log.Trace(errorMsgObj.Message);
+                    Log.Trace("BitfinexApi.CheckToLogError(): " + errorMsgObj.Message);
                     break;
                 default:
-                    Log.Trace(response.StatusCode + " - " + response.Content);
+                    Log.Trace("BitfinexApi.CheckToLogError(): " + response.StatusCode + " - " + response.Content);
                     break;
             }
         }

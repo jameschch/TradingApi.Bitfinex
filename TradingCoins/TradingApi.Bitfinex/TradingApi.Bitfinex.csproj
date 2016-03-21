@@ -35,7 +35,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="QuantConnect.Logging">
-      <HintPath>..\..\..\Lean_Dev\Logging\bin\Debug\QuantConnect.Logging.dll</HintPath>
+      <HintPath>..\..\..\Lean\Logging\bin\Debug\QuantConnect.Logging.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=105.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.1.0\lib\net45\RestSharp.dll</HintPath>
