@@ -101,10 +101,9 @@ namespace TradingApi.Bitfinex
             return symbolsResponseObj;
         }
 
-        public virtual BitfinexPublicTickerGet GetPublicTicker(BtcInfo.PairTypeEnum pairType, BtcInfo.BitfinexUnauthenicatedCallsEnum callType)
+        public virtual BitfinexPublicTickerGet GetPublicTicker(string symbol, BtcInfo.BitfinexUnauthenicatedCallsEnum callType)
         {
             var call = Enum.GetName(typeof(BtcInfo.BitfinexUnauthenicatedCallsEnum), callType);
-            var symbol = Enum.GetName(typeof(BtcInfo.PairTypeEnum), pairType);
             var url = @"/v1/" + call.ToLower() + "/" + symbol.ToLower();
             var response = GetBaseResponse(url);
 
